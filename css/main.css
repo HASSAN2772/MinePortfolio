@@ -2192,7 +2192,10 @@ form .site-btn{
     left: 0;
     z-index: -1;
 }
-
+.forRedirect{
+	text-decoration: none;
+	color: White;
+}
 
 
 /* Contact  */
