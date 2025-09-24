@@ -82,7 +82,7 @@ ajaxLoad();
   $('.onepage .grid-item').attr('data-barba-prevent', 'all');
 
   function delay(n) {
-    n = n || 500;
+    n = n || 2000;
     return new Promise((done) => {
       setTimeout(() => {
         done();
@@ -96,6 +96,7 @@ ajaxLoad();
     transitions: [{
       async leave(data) {
         const done = this.async();
+		showLoader();
         pageTransition();
         await delay(700);
         done();
@@ -104,6 +105,7 @@ ajaxLoad();
       async enter(data) {
         ajaxLoad();
           scrollbar.scrollTo(0, 0, 0);
+		  hideLoader();
         gsap.to(".page-cover", {'margin-top': '0px', autoAlpha:1, delay:.4, ease: Power3.easeOut });
         $('.page-cover').addClass('yoket');
         setTimeout(() => {
@@ -113,6 +115,26 @@ ajaxLoad();
     }, ],
   });
 
+function showLoader() {
+  const loader = document.querySelector("#loader");
+  if (loader) {
+    loader.style.display = "block";
+    gsap.set(loader, { opacity: 1 });
+  }
+}
+
+function hideLoader() {
+  const loader = document.querySelector("#loader");
+  if (loader) {
+    gsap.to(loader, {
+      opacity: 0,
+      duration: 0.8,
+      onComplete: () => {
+        loader.style.display = "none";
+      }
+    });
+  }
+}
   function pageTransition() {
     var tl = new gsap.timeline({
       yoyo: false,
