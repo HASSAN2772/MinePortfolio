@@ -19,16 +19,38 @@
 /*----------------------------------------------------------------------*/
 /* = Preloader
 /*----------------------------------------------------------------------*/
-function playLoader() {
+// function playLoader() {
 
-  gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
-  //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
+//   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
+//   //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
   
-  gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
-  gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
+//   gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
+//   gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
   
-  setTimeout(function(){ $('#loader').remove(); }, 3000);
+//   setTimeout(function(){ $('#loader').remove(); }, 3000);
+// }
+function playLoader() {
+  return new Promise((resolve) => {
+    // reset loader visibility
+    gsap.set("#loader", { y: 0, autoAlpha: 1, display: "block" });
+    gsap.set(".loading", { y: 0, autoAlpha: 1 });
+    gsap.set(".preloader .circle", { strokeDashoffset: 300 });
+
+    gsap.to(".preloader .circle", { duration: 0.7, strokeDashoffset: 0, delay: 0.5 });
+    gsap.to(".loading", { duration: 0.7, y: -100, autoAlpha: 0, delay: 1.5 });
+    gsap.to("#loader", {
+      duration: 2,
+      y: -3000,
+      delay: 2,
+      ease: "expo.out",
+      onComplete: () => {
+        gsap.set("#loader", { display: "none" }); // hide instead of remove
+        resolve(); // resolve only after loader finishes
+      }
+    });
+  });
 }
+
 
 // First load
 $(window).on("load", function () {
