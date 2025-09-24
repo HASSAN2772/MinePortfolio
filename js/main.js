@@ -1,55 +1,20 @@
 'use strict'; 
 
-
-/*----------------------------------------------------------------------*/
-/* =  Preloader
-/*----------------------------------------------------------------------*/
-// $(window).on('load', function () {
-
-//   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
-//   //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
-  
-//   gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
-//   gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
-  
-//   setTimeout(function(){ $('#loader').remove(); }, 3000);
- 
-
-// });
-/*----------------------------------------------------------------------*/
-/* = Preloader
-/*----------------------------------------------------------------------*/
-// function playLoader() {
-
-//   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
-//   //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
-  
-//   gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
-//   gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
-  
-//   setTimeout(function(){ $('#loader').remove(); }, 3000);
-// }
+// preloader
 function playLoader() {
   return new Promise((resolve) => {
-    // reset loader visibility (centered, fixed)
     gsap.set("#loader", { autoAlpha: 1, display: "flex" }); 
     gsap.set(".loading", { y: 0, autoAlpha: 1 });
     gsap.set(".preloader .circle", { strokeDashoffset: 300 });
-
-    // circle animation
     gsap.to(".preloader .circle", { duration: 0.7, strokeDashoffset: 0, delay: 0.2 });
-
-    // hide loading text
     gsap.to(".loading", { duration: 0.7, y: -50, autoAlpha: 0, delay: 1 });
-
-    // fade loader out instead of pushing up
     gsap.to("#loader", {
       duration: 1,
       autoAlpha: 0,
       delay: 1.5,
       onComplete: () => {
-        gsap.set("#loader", { display: "none" }); // hide after fade
-        resolve(); // continue immediately after fade
+        gsap.set("#loader", { display: "none" }); 
+        resolve();
       }
     });
   });
@@ -139,22 +104,16 @@ barba.init({
     async leave(data) {
       const done = this.async();
       pageTransition();
-
-      // Start loader immediately
       playLoader(); 
-
-      done(); // 👈 don't wait, let Barba continue
+      done(); 
     },
 
     async enter(data) {
       ajaxLoad();
       scrollbar.scrollTo(0, 0, 0);
-
       gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha: 1, delay: .2, ease: Power3.easeOut });
       $('.page-cover').addClass('yoket');
       setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1000);
-
-      // 👇 loader fade out AFTER content is ready
       playLoader();
     }
   }]
