@@ -1,20 +1,29 @@
 'use strict'; 
 
 
-/*----------------------------------------------------------------------*/
-/* =  Preloader
-/*----------------------------------------------------------------------*/
-$(window).on('load', function () {
+function playLoader() {
+  // Reset loader position/opacity
+  gsap.set("#loader", { y: 0, autoAlpha: 1, display: "block" });
+  gsap.set(".loading", { y: 0, autoAlpha: 1 });
+  gsap.set(".preloader .circle", { strokeDashoffset: 300 }); // reset circle
 
-  gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
-  //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
-  
-  gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
-  gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
-  
-  setTimeout(function(){ $('#loader').remove(); }, 3000);
- 
+  // Animate circle + loader
+  gsap.to(".preloader .circle", { duration: 0.7, strokeDashoffset: 0, delay: 0.5 });
+  gsap.to(".loading", { duration: 0.7, y: -100, autoAlpha: 0, delay: 1.5 });
+  gsap.to("#loader", {
+    duration: 2,
+    y: -3000,
+    delay: 2,
+    ease: "expo.out",
+    onComplete: () => {
+      gsap.set("#loader", { display: "none" }); // just hide, not remove
+    }
+  });
+}
 
+// First load
+$(window).on("load", function () {
+  playLoader();
 });
 
 
@@ -82,7 +91,6 @@ ajaxLoad();
   $('.onepage .grid-item').attr('data-barba-prevent', 'all');
 
   function delay(n) {
-    n = n || 2000;
     return new Promise((done) => {
       setTimeout(() => {
         done();
@@ -92,49 +100,24 @@ ajaxLoad();
     });
   }
 
-  barba.init({
-    transitions: [{
-      async leave(data) {
-        const done = this.async();
-		showLoader();
-        pageTransition();
-        await delay(700);
-        done();
-      },
+ barba.init({
+  transitions: [{
+    async leave(data) {
+      const done = this.async();
+      pageTransition();
+      await playLoader(); // waits until loader finishes
+      done();
+    },
+    async enter(data) {
+      ajaxLoad();
+      scrollbar.scrollTo(0, 0, 0);
+      gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha:1, delay:.4, ease: Power3.easeOut });
+      $('.page-cover').addClass('yoket');
+      setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1500);
+    }
+  }]
+});
 
-      async enter(data) {
-        ajaxLoad();
-          scrollbar.scrollTo(0, 0, 0);
-		  hideLoader();
-        gsap.to(".page-cover", {'margin-top': '0px', autoAlpha:1, delay:.4, ease: Power3.easeOut });
-        $('.page-cover').addClass('yoket');
-        setTimeout(() => {
-          $('.page-cover').removeClass('yoket');
-        }, 1500);
-      },
-    }, ],
-  });
-
-function showLoader() {
-  const loader = document.querySelector("#loader");
-  if (loader) {
-    loader.style.display = "block";
-    gsap.set(loader, { opacity: 1 });
-  }
-}
-
-function hideLoader() {
-  const loader = document.querySelector("#loader");
-  if (loader) {
-    gsap.to(loader, {
-      opacity: 0,
-      duration: 0.8,
-      onComplete: () => {
-        loader.style.display = "none";
-      }
-    });
-  }
-}
   function pageTransition() {
     var tl = new gsap.timeline({
       yoyo: false,
