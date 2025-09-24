@@ -36,38 +36,38 @@ $(window).on("load", function () {
 });
 
 // Contact Form Submit to Google Sheet
-document.addEventListener("DOMContentLoaded", function () {
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwRK5Pzotbe9JfAaUgK4BWhDgpzS93PxWK9TfoelOEZz-8deU5oTWAO4BejXvh43AvS/exec";
-    const form = document.getElementById("contactForm");
-    const msgDiv = document.getElementById("msg");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const scriptURL = "https://script.google.com/macros/s/AKfycbwRK5Pzotbe9JfAaUgK4BWhDgpzS93PxWK9TfoelOEZz-8deU5oTWAO4BejXvh43AvS/exec";
+//     const form = document.getElementById("contactForm");
+//     const msgDiv = document.getElementById("msg");
 
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
+//     form.addEventListener("submit", (e) => {
+//         e.preventDefault();
 
-        msgDiv.innerHTML = "Sending...";
-        msgDiv.style.color = "#555";
+//         msgDiv.innerHTML = "Sending...";
+//         msgDiv.style.color = "#555";
 
-        fetch(scriptURL, {
-            method: "POST",
-            body: new FormData(form)
-        })
-            .then((response) => {
-                if (response.ok) {
-                    msgDiv.innerHTML = "✅ Message sent successfully!";
-                    msgDiv.style.color = "green";
-                    form.reset();
-                } else {
-                    msgDiv.innerHTML = "❌ Something went wrong. Please try again.";
-                    msgDiv.style.color = "red";
-                }
-            })
-            .catch((error) => {
-                console.error("Error!", error.message);
-                msgDiv.innerHTML = "❌ Failed to send message.";
-                msgDiv.style.color = "red";
-            });
-    });
-});
+//         fetch(scriptURL, {
+//             method: "POST",
+//             body: new FormData(form)
+//         })
+//             .then((response) => {
+//                 if (response.ok) {
+//                     msgDiv.innerHTML = "✅ Message sent successfully!";
+//                     msgDiv.style.color = "green";
+//                     form.reset();
+//                 } else {
+//                     msgDiv.innerHTML = "❌ Something went wrong. Please try again.";
+//                     msgDiv.style.color = "red";
+//                 }
+//             })
+//             .catch((error) => {
+//                 console.error("Error!", error.message);
+//                 msgDiv.innerHTML = "❌ Failed to send message.";
+//                 msgDiv.style.color = "red";
+//             });
+//     });
+// });
 
 
 function ajaxLoad(){
