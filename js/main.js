@@ -4,7 +4,22 @@
 /*----------------------------------------------------------------------*/
 /* =  Preloader
 /*----------------------------------------------------------------------*/
-$(window).on('load', function () {
+// $(window).on('load', function () {
+
+//   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
+//   //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
+  
+//   gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
+//   gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
+  
+//   setTimeout(function(){ $('#loader').remove(); }, 3000);
+ 
+
+// });
+/*----------------------------------------------------------------------*/
+/* = Preloader
+/*----------------------------------------------------------------------*/
+function playLoader() {
 
   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
   //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
@@ -13,10 +28,12 @@ $(window).on('load', function () {
   gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
   
   setTimeout(function(){ $('#loader').remove(); }, 3000);
- 
+}
 
+// First load
+$(window).on("load", function () {
+  playLoader();
 });
-
 
 // Contact Form Submit to Google Sheet
 document.addEventListener("DOMContentLoaded", function () {
@@ -92,26 +109,24 @@ ajaxLoad();
     });
   }
 
-  barba.init({
-    transitions: [{
-      async leave(data) {
-        const done = this.async();
-        pageTransition();
-        await delay(700);
-        done();
-      },
+barba.init({
+  transitions: [{
+    async leave(data) {
+      const done = this.async();
+      pageTransition();
+      await playLoader(); // waits until loader finishes
+      done();
+    },
+    async enter(data) {
+      ajaxLoad();
+      scrollbar.scrollTo(0, 0, 0);
+      gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha:1, delay:.4, ease: Power3.easeOut });
+      $('.page-cover').addClass('yoket');
+      setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1500);
+    }
+  }]
+});
 
-      async enter(data) {
-        ajaxLoad();
-          scrollbar.scrollTo(0, 0, 0);
-        gsap.to(".page-cover", {'margin-top': '0px', autoAlpha:1, delay:.4, ease: Power3.easeOut });
-        $('.page-cover').addClass('yoket');
-        setTimeout(() => {
-          $('.page-cover').removeClass('yoket');
-        }, 1500);
-      },
-    }, ],
-  });
 
   function pageTransition() {
     var tl = new gsap.timeline({
