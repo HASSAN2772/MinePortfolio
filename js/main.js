@@ -139,20 +139,27 @@ barba.init({
     async leave(data) {
       const done = this.async();
       pageTransition();
-      // start loader but don't block
-      playLoader().then(() => {
-        done(); // mark leave done only when loader hides
-      });
+
+      // Start loader immediately
+      playLoader(); 
+
+      done(); // 👈 don't wait, let Barba continue
     },
+
     async enter(data) {
       ajaxLoad();
       scrollbar.scrollTo(0, 0, 0);
-      gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha:1, delay:.2, ease: Power3.easeOut });
+
+      gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha: 1, delay: .2, ease: Power3.easeOut });
       $('.page-cover').addClass('yoket');
-      setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1500);
+      setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1000);
+
+      // 👇 loader fade out AFTER content is ready
+      playLoader();
     }
   }]
 });
+
 
   function pageTransition() {
     var tl = new gsap.timeline({
