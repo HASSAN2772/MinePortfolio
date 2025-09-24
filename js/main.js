@@ -31,21 +31,25 @@
 // }
 function playLoader() {
   return new Promise((resolve) => {
-    // reset loader visibility
-    gsap.set("#loader", { y: 0, autoAlpha: 1, display: "block" });
+    // reset loader visibility (centered, fixed)
+    gsap.set("#loader", { autoAlpha: 1, display: "flex" }); 
     gsap.set(".loading", { y: 0, autoAlpha: 1 });
     gsap.set(".preloader .circle", { strokeDashoffset: 300 });
 
-    gsap.to(".preloader .circle", { duration: 0.7, strokeDashoffset: 0, delay: 0.5 });
-    gsap.to(".loading", { duration: 0.7, y: -100, autoAlpha: 0, delay: 1.5 });
+    // circle animation
+    gsap.to(".preloader .circle", { duration: 0.7, strokeDashoffset: 0, delay: 0.2 });
+
+    // hide loading text
+    gsap.to(".loading", { duration: 0.7, y: -50, autoAlpha: 0, delay: 1 });
+
+    // fade loader out instead of pushing up
     gsap.to("#loader", {
-      duration: 2,
-      y: -3000,
-      delay: 2,
-      ease: "expo.out",
+      duration: 1,
+      autoAlpha: 0,
+      delay: 1.5,
       onComplete: () => {
-        gsap.set("#loader", { display: "none" }); // hide instead of remove
-        resolve(); // resolve only after loader finishes
+        gsap.set("#loader", { display: "none" }); // hide after fade
+        resolve(); // continue immediately after fade
       }
     });
   });
