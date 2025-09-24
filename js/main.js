@@ -139,13 +139,15 @@ barba.init({
     async leave(data) {
       const done = this.async();
       pageTransition();
-      await playLoader(); // waits until loader finishes
-      done();
+      // start loader but don't block
+      playLoader().then(() => {
+        done(); // mark leave done only when loader hides
+      });
     },
     async enter(data) {
       ajaxLoad();
       scrollbar.scrollTo(0, 0, 0);
-      gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha:1, delay:.4, ease: Power3.easeOut });
+      gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha:1, delay:.2, ease: Power3.easeOut });
       $('.page-cover').addClass('yoket');
       setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1500);
     }
