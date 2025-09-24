@@ -1,6 +1,7 @@
 'use strict'; 
 
 
+<<<<<<< HEAD
 /*----------------------------------------------------------------------*/
 /* =  Preloader
 /*----------------------------------------------------------------------*/
@@ -22,6 +23,10 @@
 function playLoader() {
 
   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
+=======
+function playLoader() {
+   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
+>>>>>>> 647131b08cb62b7a33699412c52b877454b1e7df
   //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
   
   gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
@@ -99,7 +104,6 @@ ajaxLoad();
   $('.onepage .grid-item').attr('data-barba-prevent', 'all');
 
   function delay(n) {
-    n = n || 500;
     return new Promise((done) => {
       setTimeout(() => {
         done();
@@ -109,7 +113,11 @@ ajaxLoad();
     });
   }
 
+<<<<<<< HEAD
 barba.init({
+=======
+ barba.init({
+>>>>>>> 647131b08cb62b7a33699412c52b877454b1e7df
   transitions: [{
     async leave(data) {
       const done = this.async();
@@ -126,7 +134,10 @@ barba.init({
     }
   }]
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 647131b08cb62b7a33699412c52b877454b1e7df
 
   function pageTransition() {
     var tl = new gsap.timeline({
