@@ -2,23 +2,13 @@
 
 
 function playLoader() {
-  // Reset loader position/opacity
-  gsap.set("#loader", { y: 0, autoAlpha: 1, display: "block" });
-  gsap.set(".loading", { y: 0, autoAlpha: 1 });
-  gsap.set(".preloader .circle", { strokeDashoffset: 300 }); // reset circle
-
-  // Animate circle + loader
-  gsap.to(".preloader .circle", { duration: 0.7, strokeDashoffset: 0, delay: 0.5 });
-  gsap.to(".loading", { duration: 0.7, y: -100, autoAlpha: 0, delay: 1.5 });
-  gsap.to("#loader", {
-    duration: 2,
-    y: -3000,
-    delay: 2,
-    ease: "expo.out",
-    onComplete: () => {
-      gsap.set("#loader", { display: "none" }); // just hide, not remove
-    }
-  });
+   gsap.to($('.preloader .circle'), .7, {strokeDashoffset:0, delay:1 });
+  //gsap.to('.preloader .profile-image', {duration: 4, rotationX:360, delay:1.7, ease:Cubic.easeOut});
+  
+  gsap.to($('.loading'), 0.7, {y:-100, autoAlpha:0, delay:1.7 });
+  gsap.to($('#loader'), 3, {y:-3000, delay:2, ease:'easeOutExpo' } );
+  
+  setTimeout(function(){ $('#loader').remove(); }, 3000);
 }
 
 // First load
