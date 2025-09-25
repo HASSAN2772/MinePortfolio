@@ -110,9 +110,10 @@ barba.init({
     async leave(data) {
       const done = this.async();
       pageTransition();
-      if (!data.next.container.querySelector('#contactForm')) {
-        playLoader();
-      } done();
+      if (data.next && data.next.container && !data.next.container.querySelector('#contactForm')) {
+        await playLoader();
+      }
+      done();
     },
 
     async enter(data) {
@@ -121,8 +122,8 @@ barba.init({
       gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha: 1, delay: .2, ease: Power3.easeOut });
       $('.page-cover').addClass('yoket');
       setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1000);
-       if (!data.next.container.querySelector('#contactForm')) {
-        playLoader();
+       if (data.next && data.next.container && !data.next.container.querySelector('#contactForm')) {
+        await playLoader();
       }
     }
   }]
