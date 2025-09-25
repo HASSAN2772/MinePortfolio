@@ -74,7 +74,6 @@ function ajaxLoad() {
   testimonialSlider();
   workslider();
   lightbox();
-  ContactForm();
   videoPlay();
   charts();
   isotope();
@@ -122,6 +121,9 @@ barba.init({
       gsap.to(".page-cover", { 'margin-top': '0px', autoAlpha: 1, delay: .2, ease: Power3.easeOut });
       $('.page-cover').addClass('yoket');
       setTimeout(() => { $('.page-cover').removeClass('yoket'); }, 1000);
+       if (!data.next.container.querySelector('#contactForm')) {
+        playLoader();
+      }
     }
   }]
 });
@@ -476,50 +478,6 @@ function testimonialSlider() {
     },
   });
 }
-
-
-
-//CONTACT FORM
-function ContactForm() {
-
-  if (jQuery('#contact-formular').length > 0) {
-    $('#contactform').submit(function () {
-      var action = $(this).attr('action');
-      $("#message").slideUp(750, function () {
-        $('#message').hide();
-        $('#submit').attr('disabled', 'disabled');
-        $.post(action, {
-          name: $('#name').val(),
-          email: $('#email').val(),
-          comments: $('#comments').val()
-        },
-          function (data) {
-            document.getElementById('message').innerHTML = data;
-            $('#message').slideDown('slow');
-            $('#contactform img.loader').fadeOut('slow', function () { $(this).remove() });
-            $('#submit').removeAttr('disabled');
-            if (data.match('success') != null) $('#contactform').slideUp('slow');
-          }
-        );
-      });
-      return false;
-    });
-
-
-    $("form .form-group input, form .form-group textarea,  form .form-group select").focus(function () {
-
-
-      $(this).parents('.form-group').addClass('in');
-
-      $('form .form-group input, form .form-group textarea,  form .form-group select').blur(function () {
-        if (!$(this).val()) {
-          $(this).parents('.form-group').removeClass('in');
-        }
-      });
-    });
-  }
-
-}//End ContactForm
 
 
 
